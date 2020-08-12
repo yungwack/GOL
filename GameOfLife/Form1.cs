@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GameOfLife
@@ -16,7 +10,7 @@ namespace GameOfLife
         bool states = false;
 
         // The universe array
-        bool[,] universe = new bool[5, 5];
+        bool[,] universe = new bool[25, 25];
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -173,6 +167,57 @@ namespace GameOfLife
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            //SKIP BUTTON
+        }
+
+
+        private int CountNeighborsToroidal(int x, int y)
+
+        {
+
+            int count = 0;
+
+            int xLen = universe.GetLength(0);
+
+            int yLen = universe.GetLength(1);
+
+
+            for (int yOffset = -1; yOffset <= 1; yOffset++)
+
+            {
+
+                for (int xOffset = -1; xOffset <= 1; xOffset++)
+
+                {
+
+                    int xCheck = x + xOffset;
+
+                    int yCheck = y + yOffset;
+
+
+                    // if xOffset and yOffset are both equal to 0 then continue
+                    if (xOffset == 0 && yOffset == 0) {/*add continuity*/}
+
+                    // if xCheck is less than 0 then set to xLen - 1
+                    if (xCheck < 0) xCheck = xLen - 1;
+
+                    // if yCheck is less than 0 then set to yLen - 1
+                    if (yCheck < 0) yCheck = yLen - 1;
+
+                    // if xCheck is greater than or equal too xLen then set to 0
+                    if (xCheck >= xLen) xCheck = 0;
+
+                    // if yCheck is greater than or equal too yLen then set to 0
+                    if (yCheck >= yLen) yCheck = 0;
+
+
+
+                    if (universe[xCheck, yCheck] == true) count++;
+
+                }
+
+            }
+            return count;
 
         }
     }
