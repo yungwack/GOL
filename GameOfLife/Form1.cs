@@ -7,7 +7,7 @@ namespace GameOfLife
     public partial class Form1 : Form
     {
         // INIT NON-ESSENTIALS
-        bool states = false;
+        //bool states = false;
 
         // The universe array
         bool[,] universe = new bool[50, 50];
@@ -50,7 +50,10 @@ namespace GameOfLife
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = CountNeighborsFinite(x, y); //update neighbor coords
+
+                    scratchpad[x, y] = false;
+
+                    int count = CountNeighborsToroidal(x, y); //update neighbor coords
 
                     if (universe[x, y] == true){
                         //Living cells with less than 2 living neighbors die in the next generation.
@@ -68,9 +71,10 @@ namespace GameOfLife
                 }
             }
 
+            //Swap array
             bool[,] temp = universe;
             universe = scratchpad;
-            scratchpd = temp;
+            scratchpad = temp;
 
             // Increment generation count
             generations++;
@@ -176,21 +180,18 @@ namespace GameOfLife
             generations = 0;
             timer.Enabled = false;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-
             graphicsPanel1.Invalidate(); //nuke cells
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             //START BUTTON
-            states = false;
             timer.Enabled = true;
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             //PAUSE BUTTON
-            states = true;
             timer.Enabled = false;
         }
 
@@ -201,7 +202,7 @@ namespace GameOfLife
         }
 
 
-        private int CountNeighborsFinite(int x, int y)
+        private int CountNeighborsToroidal(int x, int y)
 
         {
 
@@ -227,16 +228,16 @@ namespace GameOfLife
                     if (xOffset == 0 && yOffset == 0) { continue; }
 
                     // if xCheck is less than 0 then continue
-                    if (xCheck < 0) { continue; }
+                    if (xCheck < 0) { xCheck = xLen - 1; }
 
                     // if yCheck is less than 0 then continue
-                    if (yCheck < 0) { continue; }
+                    if (yCheck < 0) { yCheck = yLen - 1; }
 
                     // if xCheck is greater than or equal too xLen then continue
-                    if (xCheck >= xLen) { continue; }
+                    if (xCheck >= xLen) { xCheck = 0; }
 
                     // if yCheck is greater than or equal too yLen then continue
-                    if (yCheck >= yLen) { continue; }
+                    if (yCheck >= yLen) { yCheck = 0; }
 
                     if (universe[xCheck, yCheck] == true) count++;
 
