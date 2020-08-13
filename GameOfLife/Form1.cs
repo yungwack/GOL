@@ -70,7 +70,7 @@ namespace GameOfLife
 
             bool[,] temp = universe;
             universe = scratchpad;
-            scratchpad = temp;
+            scratchpd = temp;
 
             // Increment generation count
             generations++;
