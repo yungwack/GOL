@@ -545,7 +545,6 @@ namespace GameOfLife
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 cellColor = dlg.Color;
-
                 graphicsPanel1.Invalidate();
             }
         }
