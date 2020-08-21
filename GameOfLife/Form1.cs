@@ -125,6 +125,14 @@ namespace GameOfLife
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1);
 
+            if (gridColorToolStripMenuItem.Checked == true)
+            {
+                gridPen = new Pen(gridColor, 1);
+            } else if (gridColorToolStripMenuItem.Checked == false)
+            {
+                gridPen = new Pen(Color.Transparent, 1);
+            }
+
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
 
