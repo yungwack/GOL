@@ -15,8 +15,20 @@ namespace GameOfLife
         public Form3()
         {
             BringToFront();
-
             InitializeComponent();
+        }
+
+        public int Minimum
+            // stop timer when limit is reached
+        {
+            get { return (int)numericUpDownNextGen.Minimum; }
+            set { numericUpDownNextGen.Minimum = value; }
+        }
+
+        public int ToNum
+        {
+            get { return (int)numericUpDownNextGen.Value; }
+            set { numericUpDownNextGen.Value = value; }
         }
     }
 }

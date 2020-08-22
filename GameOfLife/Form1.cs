@@ -12,6 +12,7 @@ namespace GameOfLife
         string bounds = "Finite";
         int width = 50;
         int height = 50;
+        int min = 0; // minimum value for run to window
 
         // The universe array
         bool[,] universe = new bool[50, 50];
@@ -58,7 +59,8 @@ namespace GameOfLife
         private void NextGeneration()
         {
             int count = 0;
-            isAlive = 0;
+            isAlive = 0;      
+
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -182,6 +184,12 @@ namespace GameOfLife
             {
                 e.Graphics.DrawString("Generations: " + generations + "\nCell Count: " + isAlive + "\nBoundary Type: " + bounds + "\nUniverse Size: {Width = " + width + ", Height = " + height + "}", font, Brushes.Transparent, rect, stringFormat);
             }
+
+            if (generations == min)
+            {
+                timer.Enabled = false; // stop timer when run to limit is reached
+            }
+
             // Cleaning up pens and brushes
             gridPen.Dispose();
             cellBrush.Dispose();
@@ -379,33 +387,33 @@ namespace GameOfLife
                 // Prefix all comment strings with an exclamation point.
                 // Use WriteLine to write the strings to the file. 
                 // It appends a CRLF for you.
-                writer.WriteLine("!This is my comment.");
-
                 // Iterate through the universe one row at a time.
-                for (int y = 0; y < /*universe.Height*/ 50; y++)
+                for (int y = 0; y < height; y++)
                 {
                     // Create a string to represent the current row.
                     String currentRow = string.Empty;
 
                     // Iterate through the current row one cell at a time.
-                    for (int x = 0; x < /*universe.Width*/ 50; x++)
+                    for (int x = 0; x < width; x++)
                     {
+                        // If the universe[x,y] is alive then append 'O' (capital O)
+                        // to the row string.
                         if (universe[x, y] == true)
                         {
-                            // If the universe[x,y] is alive then append 'O' (capital O)
-                            // to the row string.
-
+                            currentRow = "O";
                         }
+
+                        // Else if the universe[x,y] is dead then append '.' (period)
+                        // to the row string.
                         else if (universe[x, y] == false)
                         {
-                            // Else if the universe[x,y] is dead then append '.' (period)
-                            // to the row string.
-
+                            currentRow = ".";
                         }
+                        writer.Write(currentRow);
                     }
+                    writer.Write("\n");
                     // Once the current row has been read through and the 
                     // string constructed then write it to the file using WriteLine.
-                    Console.WriteLine(currentRow);
                 }
 
                 // After all rows and columns have been written then close the file.
@@ -413,7 +421,7 @@ namespace GameOfLife
             }
         }
 
-        /*private void Load()
+        private void LoadAs()
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "All Files|*.*|Cells|*.cells";
@@ -436,20 +444,30 @@ namespace GameOfLife
 
                     // If the row begins with '!' then it is a comment
                     // and should be ignored.
+                    if (row == "!")
+                    {
+                        continue;
+                    }
 
                     // If the row is not a comment then it is a row of cells.
                     // Increment the maxHeight variable for each row read.
+                    if (row != "!")
+                    {
+                        maxHeight++;
+                    }
 
                     // Get the length of the current row string
                     // and adjust the maxWidth variable if necessary.
+                    maxWidth = row.Length;
                 }
 
                 // Resize the current universe and scratchPad
                 // to the width and height of the file calculated above.
-
+                universe = new bool[maxWidth, maxHeight];
+                scratchpad = new bool[maxWidth, maxHeight];
                 // Reset the file pointer back to the beginning of the file.
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
-
+                int y = 0;
                 // Iterate through the file again, this time reading in the cells.
                 while (!reader.EndOfStream)
                 {
@@ -458,23 +476,36 @@ namespace GameOfLife
 
                     // If the row begins with '!' then
                     // it is a comment and should be ignored.
-
+                    if (row == "!")
+                    {
+                        continue;
+                    }
                     // If the row is not a comment then 
                     // it is a row of cells and needs to be iterated through.
                     for (int xPos = 0; xPos < row.Length; xPos++)
                     {
                         // If row[xPos] is a 'O' (capital O) then
                         // set the corresponding cell in the universe to alive.
+                        if (row[xPos] == 'O')
+                        {
+                            universe[xPos, y] = true;
+                        }
 
                         // If row[xPos] is a '.' (period) then
                         // set the corresponding cell in the universe to dead.
+                        if (row[xPos] == '.')
+                        {
+                            universe[xPos, y] = false;
+                        }
                     }
+                    // Increment by one on the y value
+                    y++;
                 }
-
                 // Close the file.
                 reader.Close();
             }
-        }*/
+            graphicsPanel1.Invalidate();
+        }
 
         // MENUS
 
@@ -587,11 +618,6 @@ namespace GameOfLife
             Properties.Settings.Default.Save();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // load options form
@@ -625,6 +651,42 @@ namespace GameOfLife
         {
             //SKIP
             NextGeneration();
+        }
+
+        private void runToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // OPEN RUN TO
+            Form3 f = new Form3();
+            f.Minimum = min + 1;
+            f.ToNum = generations + 1;
+            if (DialogResult.OK == f.ShowDialog())
+            {
+                min = f.ToNum;
+                timer.Enabled = true;
+            }
+        }
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // SAVE FILE
+            SaveAs();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // LOAD FILE
+            LoadAs();
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            // SAVE FILE
+            SaveAs();
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            // LOAD FILE
+            LoadAs();
         }
     }
 }
