@@ -10,12 +10,12 @@ namespace GameOfLife
         // INIT NON-ESSENTIALS
         //bool states = false;
         string bounds = "Finite";
-        int width = 50;
-        int height = 50;
+        int width = 100;
+        int height = 100;
 
         // The universe array
-        bool[,] universe = new bool[50, 50];
-        bool[,] scratchpad = new bool[50, 50];
+        bool[,] universe = new bool[100, 100];
+        bool[,] scratchpad = new bool[100, 100];
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -45,6 +45,8 @@ namespace GameOfLife
             timer.Tick += Timer_Tick;
 
             timer.Enabled = false; // start timer running
+
+            //graphicsPanel1.BackColor = Properties.Settings.Default.;
 
             /*if (states == true)
             {
@@ -125,10 +127,10 @@ namespace GameOfLife
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1);
 
-            if (gridColorToolStripMenuItem.Checked == true)
+            if (toolStripMenuItem2.Checked == true)
             {
                 gridPen = new Pen(gridColor, 1);
-            } else if (gridColorToolStripMenuItem.Checked == false)
+            } else if (toolStripMenuItem2.Checked == false)
             {
                 gridPen = new Pen(Color.Transparent, 1);
             }
@@ -514,11 +516,6 @@ namespace GameOfLife
             graphicsPanel1.Invalidate();
         }
 
-        private void toolsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -558,23 +555,29 @@ namespace GameOfLife
             }
         }
 
-        private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fromTimeToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int var = ran.Next(0,2);
-                    if (var == 0)
+                    int num = ran.Next(0, 2);
+                    if (num == 0)
                     {
                         universe[x, y] = true;
-                    } else if (var == 1 || var == 2)
+                    }
+                    else if (num == 1 || num == 2)
                     {
                         universe[x, y] = false;
                     }
                 }
             }
             graphicsPanel1.Invalidate();
-        }       
+        }
     }
 }
