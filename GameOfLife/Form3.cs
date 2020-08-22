@@ -15,6 +15,7 @@ namespace GameOfLife
         public Form3()
         {
             BringToFront();
+
             InitializeComponent();
         }
     }
