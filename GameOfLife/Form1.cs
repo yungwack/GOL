@@ -46,6 +46,10 @@ namespace GameOfLife
 
             timer.Enabled = false; // start timer running
 
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+
             //graphicsPanel1.BackColor = Properties.Settings.Default.;
 
             /*if (states == true)
@@ -578,6 +582,14 @@ namespace GameOfLife
                 }
             }
             graphicsPanel1.Invalidate();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //Save Settings
+            Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.GridColor = gridColor;
+            Properties.Settings.Default.CellColor = cellColor;
         }
     }
 }
