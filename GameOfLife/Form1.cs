@@ -10,12 +10,12 @@ namespace GameOfLife
         // INIT NON-ESSENTIALS
         //bool states = false;
         string bounds = "Finite";
-        int width = 100;
-        int height = 100;
+        int width = 50;
+        int height = 50;
 
         // The universe array
-        bool[,] universe = new bool[100, 100];
-        bool[,] scratchpad = new bool[100, 100];
+        bool[,] universe = new bool[50, 50];
+        bool[,] scratchpad = new bool[50, 50];
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -46,20 +46,12 @@ namespace GameOfLife
 
             timer.Enabled = false; // start timer running
 
+            // get and load settings
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
             gridColor = Properties.Settings.Default.GridColor;
             cellColor = Properties.Settings.Default.CellColor;
-
-            //graphicsPanel1.BackColor = Properties.Settings.Default.;
-
-            /*if (states == true)
-            {
-                timer.Enabled = true; // start timer running
-            }
-            else if (states == false)
-            {
-                timer.Enabled = false;
-            }*/
+            width = Properties.Settings.Default.UniverseWidth;
+            height = Properties.Settings.Default.UniverseHeight;
         }
 
         // Calculate the next generation of cells
@@ -369,10 +361,7 @@ namespace GameOfLife
 
                 }
             }
-
             return count;
-
-
         }
 
         private void SaveAs()
@@ -561,6 +550,7 @@ namespace GameOfLife
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
+            // toggle grid visibility
             graphicsPanel1.Invalidate();
         }
 
@@ -586,10 +576,55 @@ namespace GameOfLife
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Save Settings
+            // get current settings at shutdown
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
             Properties.Settings.Default.GridColor = gridColor;
             Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.UniverseWidth = width;
+            Properties.Settings.Default.UniverseHeight = height;
+
+            // save 
+            Properties.Settings.Default.Save();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // load options form
+            Form2 f = new Form2();
+            f.f2Timer = timer.Interval;
+            f.f2Width = width;
+            f.f2Height = height;
+            if (DialogResult.OK == f.ShowDialog())
+            {
+                timer.Interval = f.f2Timer;
+                width = f.f2Width;
+                height = f.f2Height;
+                universe = new bool[width, height];
+                scratchpad = new bool[width, height];
+            }
+        }
+
+        private void runToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // RUN
+            timer.Enabled = true;
+        }
+
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // PAUSE
+            timer.Enabled = false;
+        }
+
+        private void nextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //SKIP
+            NextGeneration();
         }
     }
 }
