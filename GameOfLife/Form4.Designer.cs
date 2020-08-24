@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    partial class Form3
+    partial class Form4
     {
         /// <summary>
         /// Required designer variable.
@@ -28,43 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.numericUpDownNextGen = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownSeed = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNextGen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeed)).BeginInit();
             this.SuspendLayout();
             // 
-            // numericUpDownNextGen
+            // numericUpDownSeed
             // 
-            this.numericUpDownNextGen.Location = new System.Drawing.Point(58, 66);
-            this.numericUpDownNextGen.Maximum = new decimal(new int[] {
-            276447232,
-            23283,
-            0,
-            0});
-            this.numericUpDownNextGen.Minimum = new decimal(new int[] {
-            1,
+            this.numericUpDownSeed.Location = new System.Drawing.Point(33, 65);
+            this.numericUpDownSeed.Maximum = new decimal(new int[] {
+            10000000,
             0,
             0,
             0});
-            this.numericUpDownNextGen.Name = "numericUpDownNextGen";
-            this.numericUpDownNextGen.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownNextGen.TabIndex = 0;
-            this.numericUpDownNextGen.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.numericUpDownSeed.Name = "numericUpDownSeed";
+            this.numericUpDownSeed.Size = new System.Drawing.Size(96, 20);
+            this.numericUpDownSeed.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 47);
+            this.label1.Location = new System.Drawing.Point(30, 49);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Run To Generation";
+            this.label1.Text = "Seed";
             // 
             // button1
             // 
@@ -79,14 +69,14 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(65, 144);
+            this.button2.Location = new System.Drawing.Point(65, 145);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
             this.button2.Text = "OK";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // Form3
+            // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,13 +84,13 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.numericUpDownNextGen);
+            this.Controls.Add(this.numericUpDownSeed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form3";
-            this.Text = "Run To";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNextGen)).EndInit();
+            this.Name = "Form4";
+            this.Text = "From Seed";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,7 +98,7 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown numericUpDownNextGen;
+        private System.Windows.Forms.NumericUpDown numericUpDownSeed;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

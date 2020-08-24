@@ -7,8 +7,7 @@ namespace GameOfLife
 {
     public partial class Form1 : Form
     {
-        // INIT NON-ESSENTIALS
-        //bool states = false;
+        // init globals
         string bounds = "Finite";
         int width = 50;
         int height = 50;
@@ -39,13 +38,7 @@ namespace GameOfLife
 
         public Form1()
         {
-            InitializeComponent();
-
-            // Setup the timer
-            timer.Interval = 100; // milliseconds
-            timer.Tick += Timer_Tick;
-
-            timer.Enabled = false; // start timer running
+            InitializeComponent(); // init program
 
             // get and load settings
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
@@ -53,13 +46,19 @@ namespace GameOfLife
             cellColor = Properties.Settings.Default.CellColor;
             width = Properties.Settings.Default.UniverseWidth;
             height = Properties.Settings.Default.UniverseHeight;
+
+            // Setup the timer
+            timer.Interval = 100; // milliseconds
+            timer.Tick += Timer_Tick;
+
+            timer.Enabled = false; // start timer running
         }
 
         // Calculate the next generation of cells
         private void NextGeneration()
         {
             int count = 0;
-            isAlive = 0;      
+            isAlive = 0;
 
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -70,7 +69,8 @@ namespace GameOfLife
                     if (toolStripToroidal.Checked == true)
                     {
                         count = CountNeighborsToroidal(x, y); //update neighbor coords
-                    } else if (toolStripFinite.Checked == true)
+                    }
+                    else if (toolStripFinite.Checked == true)
                     {
                         count = CountNeighborsFinite(x, y); //update neighbor coords
                     }
@@ -115,6 +115,7 @@ namespace GameOfLife
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
+
             //convert to floats
             // Calculate the width and height of each cell in pixels
             // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
@@ -128,7 +129,8 @@ namespace GameOfLife
             if (toolStripMenuItem2.Checked == true)
             {
                 gridPen = new Pen(gridColor, 1);
-            } else if (toolStripMenuItem2.Checked == false)
+            }
+            else if (toolStripMenuItem2.Checked == false)
             {
                 gridPen = new Pen(Color.Transparent, 1);
             }
@@ -172,7 +174,8 @@ namespace GameOfLife
             if (toolStripFinite.Checked == true)
             {
                 bounds = "Finite";
-            } else if (toolStripToroidal.Checked == true)
+            }
+            else if (toolStripToroidal.Checked == true)
             {
                 bounds = "Toroidal";
             }
@@ -180,7 +183,8 @@ namespace GameOfLife
             if (toolStripMenuItem1.Checked == true)
             {
                 e.Graphics.DrawString("Generations: " + generations + "\nCell Count: " + isAlive + "\nBoundary Type: " + bounds + "\nUniverse Size: {Width = " + width + ", Height = " + height + "}", font, hudBrush, rect, stringFormat);
-            } else if (toolStripMenuItem1.Checked == false)
+            }
+            else if (toolStripMenuItem1.Checked == false)
             {
                 e.Graphics.DrawString("Generations: " + generations + "\nCell Count: " + isAlive + "\nBoundary Type: " + bounds + "\nUniverse Size: {Width = " + width + ", Height = " + height + "}", font, Brushes.Transparent, rect, stringFormat);
             }
@@ -218,11 +222,6 @@ namespace GameOfLife
             }
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -234,8 +233,8 @@ namespace GameOfLife
                     scratchpad[x, y] = false;
                 }
             }
-
             generations = 0;
+
             timer.Enabled = false;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
             graphicsPanel1.Invalidate(); //nuke cells
@@ -509,11 +508,6 @@ namespace GameOfLife
 
         // MENUS
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void toolStripFinite_Click(object sender, EventArgs e)
         {
             //finite mode
@@ -532,16 +526,17 @@ namespace GameOfLife
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Close(); // KILL
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            graphicsPanel1.Invalidate();
+            graphicsPanel1.Invalidate(); // HIDE GRID
         }
 
         private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // GRID COLOR DIALOG
             ColorDialog dlg = new ColorDialog();
             dlg.Color = gridColor;
 
@@ -555,6 +550,7 @@ namespace GameOfLife
 
         private void backColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // BACKGROUND COLOR DIALOG
             ColorDialog dlg = new ColorDialog();
             dlg.Color = graphicsPanel1.BackColor;
 
@@ -568,6 +564,49 @@ namespace GameOfLife
 
         private void cellColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // CELL COLOR DIALOG
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = cellColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                cellColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void gridColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // GRID COLOR DIALOG - CONTEXT MENU
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = gridColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                gridColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            // BACKGROUND COLOR DIALOG - CONTEXT MENU
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = graphicsPanel1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void cellColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // CELL COLOR DIALOG - CONTEXT MENU
             ColorDialog dlg = new ColorDialog();
             dlg.Color = cellColor;
 
@@ -585,8 +624,23 @@ namespace GameOfLife
             graphicsPanel1.Invalidate();
         }
 
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // RANDOMIZE FROM SEED
+            /*Form4 f = new Form4();
+
+            f.Seed = numericUpDownSeed.Value;
+
+            if (DialogResult.OK == f.ShowDialog())
+            {
+                numericUpDownSeed.Value = f.Seed;
+            }
+            graphicsPanel1.Invalidate(); // update */
+        }
+
         private void fromTimeToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+            // RANDOMIZE FROM TIME
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -618,6 +672,24 @@ namespace GameOfLife
             Properties.Settings.Default.Save();
         }
 
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // load options form - context menu
+            Form2 f = new Form2();
+            f.f2Timer = timer.Interval;
+            f.f2Width = width;
+            f.f2Height = height;
+            if (DialogResult.OK == f.ShowDialog())
+            {
+                timer.Interval = f.f2Timer;
+                width = f.f2Width;
+                height = f.f2Height;
+                universe = new bool[width, height];
+                scratchpad = new bool[width, height];
+            }
+            graphicsPanel1.Invalidate();
+        }
+
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // load options form
@@ -633,6 +705,7 @@ namespace GameOfLife
                 universe = new bool[width, height];
                 scratchpad = new bool[width, height];
             }
+            graphicsPanel1.Invalidate();
         }
 
         private void runToolStripMenuItem1_Click(object sender, EventArgs e)
