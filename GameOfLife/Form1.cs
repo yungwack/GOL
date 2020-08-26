@@ -642,14 +642,9 @@ namespace GameOfLife
         private void fromTimeToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             // RANDOMIZE FROM TIME
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    int num = ran.Next(0, 3);
-
-                }
-            }
+            int num = ran.Next();
+            seed = num;
+            RandSeed(seed);
             graphicsPanel1.Invalidate();
         }
 
