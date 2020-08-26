@@ -12,6 +12,7 @@ namespace GameOfLife
         int width = 50;
         int height = 50;
         int min = 0; // minimum value for run to window
+        int seed = 420691337;
 
         // The universe array
         bool[,] universe = new bool[50, 50];
@@ -46,9 +47,9 @@ namespace GameOfLife
             cellColor = Properties.Settings.Default.CellColor;
             width = Properties.Settings.Default.UniverseWidth;
             height = Properties.Settings.Default.UniverseHeight;
-
+            
             // Setup the timer
-            timer.Interval = 100; // milliseconds
+            timer.Interval = Properties.Settings.Default.Milliseconds; // milliseconds
             timer.Tick += Timer_Tick;
 
             timer.Enabled = false; // start timer running
@@ -182,7 +183,7 @@ namespace GameOfLife
 
             if (toolStripMenuItem1.Checked == true)
             {
-                e.Graphics.DrawString("Generations: " + generations + "\nCell Count: " + isAlive + "\nBoundary Type: " + bounds + "\nUniverse Size: {Width = " + width + ", Height = " + height + "}", font, hudBrush, rect, stringFormat);
+                e.Graphics.DrawString("Generations: " + generations + "\nCell Count: " + isAlive + "\nSeed Value: "+ seed + "\nBoundary Type: " + bounds + "\nUniverse Size: {Width = " + width + ", Height = " + height + "}", font, hudBrush, rect, stringFormat);
             }
             else if (toolStripMenuItem1.Checked == false)
             {
@@ -503,6 +504,7 @@ namespace GameOfLife
                 // Close the file.
                 reader.Close();
             }
+            generations = 0;          
             graphicsPanel1.Invalidate();
         }
 
@@ -626,16 +628,15 @@ namespace GameOfLife
 
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // RANDOMIZE FROM SEED
-            /*Form4 f = new Form4();
-
-            f.Seed = numericUpDownSeed.Value;
-
+            // from seed method
+            Form4 f = new Form4();
+            f.Seed = seed;
             if (DialogResult.OK == f.ShowDialog())
             {
-                numericUpDownSeed.Value = f.Seed;
+                seed = (int)f.Seed;
+                RandSeed(seed);
             }
-            graphicsPanel1.Invalidate(); // update */
+            graphicsPanel1.Invalidate();
         }
 
         private void fromTimeToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -645,15 +646,8 @@ namespace GameOfLife
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int num = ran.Next(0, 2);
-                    if (num == 0)
-                    {
-                        universe[x, y] = true;
-                    }
-                    else if (num == 1 || num == 2)
-                    {
-                        universe[x, y] = false;
-                    }
+                    int num = ran.Next(0, 3);
+
                 }
             }
             graphicsPanel1.Invalidate();
@@ -667,9 +661,45 @@ namespace GameOfLife
             Properties.Settings.Default.CellColor = cellColor;
             Properties.Settings.Default.UniverseWidth = width;
             Properties.Settings.Default.UniverseHeight = height;
+            Properties.Settings.Default.Milliseconds = timer.Interval;
 
             // save 
             Properties.Settings.Default.Save();
+        }
+
+        private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // from current seed
+            RandSeed(seed);
+            graphicsPanel1.Invalidate();
+        }
+
+        private void RandInt(Random val)
+        {
+            //from seed 
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    int num = val.Next(0, 3);
+                    if (num == 0)
+                    {
+                        universe[x, y] = true;
+                    }
+                    else if (num == 1 || num == 2)
+                    {
+                        universe[x, y] = false;
+                    }
+                }
+                val.NextDouble();
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        private void RandSeed(int val2)
+        {
+            Random inp = new Random(val2);
+            RandInt(inp);
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -722,7 +752,7 @@ namespace GameOfLife
 
         private void nextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //SKIP
+            // SKIP
             NextGeneration();
         }
 
@@ -760,6 +790,44 @@ namespace GameOfLife
         {
             // LOAD FILE
             LoadAs();
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // NUKE THE PROGRAM
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    // clear graphics panel
+                    universe[x,y] = false;
+                    scratchpad[x, y] = false;
+                }
+            }
+            // set all global vars to default init values
+            width = 50;
+            height = 50;
+            timer.Interval = 100;
+            graphicsPanel1.BackColor = Color.White;
+            gridColor = Color.Black;
+            cellColor = Color.Gray;
+
+            // refresh graphics panel
+            universe = new bool[50, 50];
+            scratchpad = new bool[50, 50];
+
+            graphicsPanel1.Invalidate(); // KILL
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // set all global vars to last saved values
+            width = Properties.Settings.Default.UniverseWidth;
+            height = Properties.Settings.Default.UniverseHeight;
+            timer.Interval = Properties.Settings.Default.Milliseconds;
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
         }
     }
 }

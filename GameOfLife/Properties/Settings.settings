@@ -12,10 +12,13 @@
       <Value Profile="(Default)">Silver</Value>
     </Setting>
     <Setting Name="UniverseWidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="UniverseHeight" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="Milliseconds" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
     </Setting>
   </Settings>
 </SettingsFile>

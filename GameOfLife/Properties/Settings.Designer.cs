@@ -61,7 +61,7 @@ namespace GameOfLife.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int UniverseWidth {
             get {
                 return ((int)(this["UniverseWidth"]));
@@ -73,13 +73,25 @@ namespace GameOfLife.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int UniverseHeight {
             get {
                 return ((int)(this["UniverseHeight"]));
             }
             set {
                 this["UniverseHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int Milliseconds {
+            get {
+                return ((int)(this["Milliseconds"]));
+            }
+            set {
+                this["Milliseconds"] = value;
             }
         }
     }

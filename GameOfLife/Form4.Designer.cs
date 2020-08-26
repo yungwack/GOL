@@ -37,9 +37,9 @@
             // 
             // numericUpDownSeed
             // 
-            this.numericUpDownSeed.Location = new System.Drawing.Point(33, 65);
+            this.numericUpDownSeed.Location = new System.Drawing.Point(65, 65);
             this.numericUpDownSeed.Maximum = new decimal(new int[] {
-            10000000,
+            2147483647,
             0,
             0,
             0});
@@ -50,7 +50,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 49);
+            this.label1.Location = new System.Drawing.Point(62, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 1;
